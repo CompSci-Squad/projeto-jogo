@@ -5,25 +5,35 @@ public class EnemyController : MonoBehaviour
     public float speed = 2f;
     private int direction = 1;
 
-    public Transform groundCheck;
-    public float checkDistance = 1f;
+    public Transform groundCheckLeft;
+    public Transform groundCheckRight;
+    public float checkDistance = 0.7f;
     public LayerMask groundLayer;
 
-    void Update()
+    private Rigidbody2D rb;
+
+    void Start()
     {
-        CheckGround(); // 👈 CHECA ANTES
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate()
+    {
+        CheckGround();
         Move();
     }
 
     void Move()
     {
-        transform.Translate(Vector2.right * direction * speed * Time.deltaTime);
+        rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
     }
 
     void CheckGround()
     {
+        Transform activeCheck = direction == 1 ? groundCheckRight : groundCheckLeft;
+
         RaycastHit2D groundInfo = Physics2D.Raycast(
-            groundCheck.position,
+            activeCheck.position,
             Vector2.down,
             checkDistance,
             groundLayer
@@ -38,28 +48,46 @@ public class EnemyController : MonoBehaviour
     void Flip()
     {
         direction *= -1;
+    }
 
-        // vira sprite
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
 
-        // move o GroundCheck pro outro lado IMEDIATAMENTE
-        groundCheck.localPosition = new Vector2(
-            -groundCheck.localPosition.x,
-            groundCheck.localPosition.y
-        );
+            // pega o ponto de contato
+            ContactPoint2D contact = collision.GetContact(0);
+
+            // verifica se o player está ACIMA do inimigo
+            if (contact.normal.y <= -0.5f)
+            {
+                // matou o inimigo
+                Destroy(gameObject);
+
+                // quique estilo Mario
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 10f);
+            }
+            else
+            {
+                // tomou dano
+                collision.gameObject.GetComponent<PlayerController>().Die();
+            }
+        }
     }
 
     void OnDrawGizmos()
     {
-        if (groundCheck != null)
+        if (groundCheckLeft != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(
-                groundCheck.position,
-                groundCheck.position + Vector3.down * checkDistance
-            );
+            Gizmos.DrawLine(groundCheckLeft.position, groundCheckLeft.position + Vector3.down * checkDistance);
+        }
+
+        if (groundCheckRight != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(groundCheckRight.position, groundCheckRight.position + Vector3.down * checkDistance);
         }
     }
 }

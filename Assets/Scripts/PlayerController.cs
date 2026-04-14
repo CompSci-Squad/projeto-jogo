@@ -30,11 +30,6 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
-
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Die();
-        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -45,8 +40,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
+        GameManager.instance.LoseLife();
         transform.position = new Vector2(0, -3);
     }
 }
