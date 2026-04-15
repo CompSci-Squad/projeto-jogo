@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public GameObject[] hearts;
 
     public GameObject gameOverPanel;
+    public GameObject winPanel;
+
+    public TMP_Text gameOverScoreText;
+    public TMP_Text winScoreText;
 
     void Awake()
     {
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
     void GameOver()
     {
         gameOverPanel.SetActive(true);
+        gameOverScoreText.text = "Moedas: " + score;
         Time.timeScale = 0f; // pausa o jogo
     }
 
@@ -64,5 +69,18 @@ public class GameManager : MonoBehaviour
         {
             hearts[i].SetActive(i < lives);
         }
+    }
+
+    public void WinGame()
+    {
+        winPanel.SetActive(true);
+        winScoreText.text = "Moedas: " + score;
+        Time.timeScale = 0f;
+    }
+
+    public void NextLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

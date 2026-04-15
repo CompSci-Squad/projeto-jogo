@@ -55,23 +55,30 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 
-            // pega o ponto de contato
-            ContactPoint2D contact = collision.GetContact(0);
+            float playerY = collision.transform.position.y;
+            float enemyY = transform.position.y;
 
-            // verifica se o player está ACIMA do inimigo
-            if (contact.normal.y <= -0.5f)
+            // 👇 PLAYER PULOU EM CIMA
+            if (playerY > enemyY + 0.3f && playerRb.linearVelocity.y < 0)
             {
-                // matou o inimigo
                 Destroy(gameObject);
 
-                // quique estilo Mario
                 playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 10f);
             }
             else
             {
-                // tomou dano
-                collision.gameObject.GetComponent<PlayerController>().Die();
+                // 👊 IMPACTO LATERAL
+                float dir = collision.transform.position.x > transform.position.x ? 1 : -1;
+
+                Vector2 force = new Vector2(dir * 8f, 6f);
+
+                player.ApplyKnockback(force);
+
+                rb.linearVelocity = new Vector2(-dir * 4f, 4f);
+
+                player.TakeDamage();
             }
         }
     }
