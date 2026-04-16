@@ -50,12 +50,23 @@ public class EnemyController : MonoBehaviour
         direction *= -1;
     }
 
-        void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
             PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+
+            // 🔥 SE ESTIVER COM POWER-UP → MATA DIRETO
+            if (player != null && player.IsPowered())
+            {
+                Destroy(gameObject);
+
+                // opcional: dá um leve quique no player
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 8f);
+
+                return;
+            }
 
             float playerY = collision.transform.position.y;
             float enemyY = transform.position.y;

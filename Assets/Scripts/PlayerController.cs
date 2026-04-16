@@ -10,6 +10,12 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isDead = false;
     private bool isKnocked = false;
+    private bool isPowered = false;
+
+    public bool IsPowered()
+    {
+        return isPowered;
+    }
 
     void Start()
     {
@@ -129,5 +135,34 @@ public class PlayerController : MonoBehaviour
 
         this.enabled = true;
         isKnocked = false;
+    }
+
+    public void ActivateFirePower(float duration)
+    {
+        if (isPowered) return;
+
+        StartCoroutine(FirePowerRoutine(duration));
+    }
+
+    IEnumerator FirePowerRoutine(float duration)
+    {
+        isPowered = true;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            // alterna cores (efeito brilho)
+            sr.color = Color.Lerp(Color.white, Color.orange, Mathf.PingPong(Time.time * 2f, 1));
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // volta ao normal
+        sr.color = Color.white;
+        isPowered = false;
     }
 }

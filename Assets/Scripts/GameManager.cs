@@ -8,15 +8,14 @@ public class GameManager : MonoBehaviour
 
     public int lives = 3;
     public int score = 0;
-
     public TMP_Text scoreText;
     public GameObject[] hearts;
-
     public GameObject gameOverPanel;
     public GameObject winPanel;
-
     public TMP_Text gameOverScoreText;
     public TMP_Text winScoreText;
+    public bool hasKey = false;
+    public GameObject keyIcon;
 
     void Awake()
     {
