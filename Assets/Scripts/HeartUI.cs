@@ -27,10 +27,8 @@ public class HeartUI : MonoBehaviour
         {
             float t = time / duration;
 
-            // diminui tamanho
             transform.localScale = Vector3.Lerp(startScale, targetScale, t);
 
-            // fade out
             canvasGroup.alpha = Mathf.Lerp(1, 0, t);
 
             time += Time.deltaTime;

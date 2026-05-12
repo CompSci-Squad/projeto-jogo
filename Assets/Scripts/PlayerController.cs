@@ -61,44 +61,35 @@ public class PlayerController : MonoBehaviour
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-        // zera velocidade
         rb.linearVelocity = Vector2.zero;
 
-        // quique pra cima
         rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
 
-        // desativa controle
         this.enabled = false;
 
         if (fellOff)
         {
-            // perdeu todas as vidas direto
             GameManager.instance.lives = 0;
 
-            // chama game over depois de um tempo
             Invoke("TriggerGameOver", 1.5f);
         }
         else
         {
-            // morte normal (inimigo)
             Invoke("Respawn", 1.5f);
         }
     }
 
     void TriggerGameOver()
     {
-        GameManager.instance.LoseLife(); // vai cair em 0 → Game Over
+        GameManager.instance.LoseLife(); 
     }
 
     void Respawn()
     {
-        // se estiver usando vidas:
         GameManager.instance.LoseLife();
 
-        // reinicia posição
         transform.position = new Vector2(0, -3);
 
-        // reativa controle
         this.enabled = true;
 
         isDead = false;
@@ -117,13 +108,10 @@ public class PlayerController : MonoBehaviour
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-        // zera velocidade antes do impacto
         rb.linearVelocity = Vector2.zero;
 
-        // aplica força
         rb.AddForce(force, ForceMode2D.Impulse);
 
-        // desativa controle temporariamente
         StartCoroutine(KnockbackRoutine());
     }
 
@@ -131,7 +119,7 @@ public class PlayerController : MonoBehaviour
     {
         this.enabled = false;
 
-        yield return new WaitForSeconds(0.3f); // tempo sem controle
+        yield return new WaitForSeconds(0.3f); 
 
         this.enabled = true;
         isKnocked = false;
@@ -154,14 +142,14 @@ public class PlayerController : MonoBehaviour
 
         while (timer < duration)
         {
-            // alterna cores (efeito brilho)
+            
             sr.color = Color.Lerp(Color.white, Color.orange, Mathf.PingPong(Time.time * 2f, 1));
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // volta ao normal
+        
         sr.color = Color.white;
         isPowered = false;
     }

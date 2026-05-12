@@ -57,12 +57,10 @@ public class EnemyController : MonoBehaviour
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
             PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 
-            // 🔥 SE ESTIVER COM POWER-UP → MATA DIRETO
             if (player != null && player.IsPowered())
             {
                 Destroy(gameObject);
 
-                // opcional: dá um leve quique no player
                 playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 8f);
 
                 return;
@@ -71,7 +69,6 @@ public class EnemyController : MonoBehaviour
             float playerY = collision.transform.position.y;
             float enemyY = transform.position.y;
 
-            // 👇 PLAYER PULOU EM CIMA
             if (playerY > enemyY + 0.3f && playerRb.linearVelocity.y < 0)
             {
                 Destroy(gameObject);
@@ -80,7 +77,6 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                // 👊 IMPACTO LATERAL
                 float dir = collision.transform.position.x > transform.position.x ? 1 : -1;
 
                 Vector2 force = new Vector2(dir * 8f, 6f);

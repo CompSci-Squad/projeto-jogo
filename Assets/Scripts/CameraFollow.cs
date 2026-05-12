@@ -6,7 +6,6 @@ public class CameraFollow : MonoBehaviour
 
     public float smoothSpeed = 5f;
 
-    // limite mínimo da câmera
     public float minY = 0f;
 
     void LateUpdate()
@@ -15,7 +14,6 @@ public class CameraFollow : MonoBehaviour
 
         float targetY = target.position.y;
 
-        // 👇 impede câmera de descer demais
         if (targetY < minY)
         {
             targetY = minY;

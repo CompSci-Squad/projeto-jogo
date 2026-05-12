@@ -8,7 +8,7 @@ public class Key : MonoBehaviour
         {
             GameManager.instance.hasKey = true;
 
-            // 🔥 MOSTRA O ÍCONE
+          
             GameManager.instance.keyIcon.SetActive(true);
 
             Destroy(gameObject);
