@@ -2,26 +2,35 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;
+    public Transform target;
+
     public float smoothSpeed = 5f;
-    public Vector3 offset;
+
+    // limite mínimo da câmera
+    public float minY = 0f;
 
     void LateUpdate()
     {
-        if (player == null) return;
+        if (target == null) return;
 
-        Vector3 desiredPosition = player.position + offset;
+        float targetY = target.position.y;
 
-        Vector3 smoothedPosition = Vector3.Lerp(
+        // 👇 impede câmera de descer demais
+        if (targetY < minY)
+        {
+            targetY = minY;
+        }
+
+        Vector3 desiredPosition = new Vector3(
+            target.position.x,
+            targetY,
+            transform.position.z
+        );
+
+        transform.position = Vector3.Lerp(
             transform.position,
             desiredPosition,
             smoothSpeed * Time.deltaTime
-        );
-
-        transform.position = new Vector3(
-            smoothedPosition.x,
-            transform.position.y,
-            transform.position.z
         );
     }
 }

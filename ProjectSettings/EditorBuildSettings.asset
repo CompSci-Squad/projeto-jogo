@@ -12,7 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Fase1.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Fase2.unity
-    guid: 7d9881bab01e4fd4bae485c5b8f0742b
+    path: Assets/Scenes/Fase 2.unity
+    guid: 7fe92095042842d468e92b1e53387e1b
+  - enabled: 1
+    path: Assets/Scenes/Tela Final.unity
+    guid: a96b5d26f2f01f2409159468c1adaba3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
